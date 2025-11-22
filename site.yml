@@ -1,0 +1,9 @@
+---
+# 1. Configure System Prerequisites (Swap, Cgroups)
+- import_playbook: playbooks/prereq.yml
+
+# 2. Install VPN Network
+- import_playbook: playbooks/install-tailscale.yml
+
+# 3. Bootstrap Kubernetes Cluster
+- import_playbook: playbooks/install-k3s.yml

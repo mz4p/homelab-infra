@@ -1,0 +1,24 @@
+---
+- name: Install and Configure Tailscale VPN
+  hosts: k3s_cluster
+  become: true
+  vars:
+    tailscale_auth_key: "{{ ts_key }}"
+
+  tasks:
+    - name: Check if Tailscale is already installed
+      stat:
+        path: /usr/bin/tailscale
+      register: tailscale_bin
+
+    - name: Download and run Tailscale install script
+      shell: curl -fsSL https://tailscale.com/install.sh | sh
+      when: not tailscale_bin.stat.exists
+
+    - name: Bring Tailscale up with auth key
+      command: "tailscale up --auth-key={{ tailscale_auth_key }}"
+      register: tailscale_start
+      changed_when: "'Success' in tailscale_start.stdout"
+      failed_when: 
+        - tailscale_start.rc != 0
+        - "'already' not in tailscale_start.stderr"
