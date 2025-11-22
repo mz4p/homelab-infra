@@ -1,0 +1,17 @@
+# Ansible backup files
+*.retry
+*.swp
+*.bak
+
+# SSH Keys (chroń swoje klucze!)
+*.pem
+id_rsa
+id_ed25519
+id_ed25519.pub
+
+# Kubernetes configs (nie wrzucaj dostępów do klastra)
+kubeconfig
+k3s.yaml
+
+# Systemowe śmieci
+.DS_Store
