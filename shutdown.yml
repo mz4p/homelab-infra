@@ -1,0 +1,19 @@
+---
+- name: Graceful Cluster Shutdown
+  hosts: k3s_cluster
+  become: true
+  gather_facts: false
+  
+  tasks:
+    - name: Sync filesystem buffers to disk (Save SD cards!)
+      command: sync
+
+    - name: Shutdown the system immediately
+      shell: /sbin/shutdown -h now
+      async: 1
+      poll: 0
+      ignore_errors: true
+
+    - name: User Notification
+      debug:
+        msg: "Sending shutdown signal to {{ inventory_hostname }}. Connection will close shortly."
