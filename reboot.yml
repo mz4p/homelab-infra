@@ -1,0 +1,17 @@
+---
+- name: Cluster Rolling Restart
+  hosts: k3s_cluster
+  become: true
+  serial: 1
+  
+  tasks:
+    - name: Sync filesystems (Save SD cards!)
+      command: sync
+
+    - name: Reboot the node and wait for it to come back
+      ansible.builtin.reboot:
+        msg: "Rebooting initiated by Ansible"
+        pre_reboot_delay: 5
+        post_reboot_delay: 15
+        reboot_timeout: 600 
+        test_command: whoami
